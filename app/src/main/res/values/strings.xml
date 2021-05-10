@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">KaraokeBuddies</string>
+    <string name="title">Karaoke Buddies</string>
+    <string name="friends">Friends</string>
+    <string name="myProfile">My Profile</string>
+    <string name="selectMusicTitle">Select Music Title</string>
+    <string name="textView_songTitle">song title</string>
+    <string name="textView_songArtist">song artist</string>
+    <string name="stop_music">stop music</string>
+</resources>
