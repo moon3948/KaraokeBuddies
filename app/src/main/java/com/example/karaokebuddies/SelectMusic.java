@@ -46,7 +46,7 @@ public class SelectMusic extends AppCompatActivity {
     String imageURL;
     int currentIndex;
 
-    TrackAdapter adapter = new TrackAdapter(tracks);
+    TrackAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +59,12 @@ public class SelectMusic extends AppCompatActivity {
 
         tracks = new ArrayList<>();
 
+        adapter = new TrackAdapter(tracks);
+        recyclerView.setLayoutManager(new LinearLayoutManager(SelectMusic.this));
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(SelectMusic.this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setAdapter(adapter);
 
         client.addHeader("x-rapidapi-key", "c6a7192fc9msh4931c462d8c53c4p1ced90jsn45cd3d660151");
         client.addHeader("x-rapidapi-host", "shazam.p.rapidapi.com");
@@ -77,18 +83,12 @@ public class SelectMusic extends AppCompatActivity {
                         for (int j = 0; j < imagesObject.length(); j++) {
                             imageURL = imagesObject.getString("background");
                         }
-                        JSONObject hubObject = tracksObject.getJSONObject("hub");
-                        for (int k = 0; k < hubObject.length(); k++) {
-                            JSONArray actionsArray = hubObject.getJSONArray("actions");
-                            JSONObject uriObject = actionsArray.getJSONObject(1);
-                            url = uriObject.getString("uri");
-                        }
+                        url = tracksObject.getString("url");
 
                         Track track = new Track(title, subtitle, imageURL, url);
                         tracks.add(track);
                     }
-                    adapter = new TrackAdapter(tracks);
-                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,14 +99,6 @@ public class SelectMusic extends AppCompatActivity {
                 Log.e("failure", "failure");
             }
         });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecoration);
-
     }
-
-
 
 }
